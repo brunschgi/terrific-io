@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
-	name: String,
-	description: String,
+	name: { type: String, default: "" },
+	description: { type: String, default: "" },
 	html: {
 		type: { type: String, default: "html"},
 		content: { type: String, default: "" }
@@ -15,7 +15,7 @@ var schema = new mongoose.Schema({
 		type: { type: String, default: "js"},
 		content: { type: String, default: "" }
 	},
-	user: { type: String, ref: 'User' },
+	user: { type: String, ref: 'User', default: 'brunschgi' },
 	collaborators: [
 		{ type: String, ref: 'User' }
 	],

@@ -167,6 +167,9 @@
 			doc.write('<script>' + js.getValue() + '</script>');
 			doc.write('</body></html>');
 			doc.close();
+
+			// set iframe height
+			iframe.height = $(doc).height();
 		}
 	});
 })();
