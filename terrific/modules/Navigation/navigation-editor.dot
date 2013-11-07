@@ -1,0 +1,15 @@
+<div class="mod mod-navigation">
+	<nav class="navbar">
+		<div class="navbar-inner">
+			<a class="brand" href="#">terrific.io</a>
+			<ul class="nav">
+				<li class="active"><a href="#browse">Browse</a></li>
+				<li><a href="#search">Search</a></li>
+			</ul>
+			<div class="pull-right">
+				<a class="btn btn-info b-resources" href="#add"><i class="icon-upload icon-white"></i> Resources</a>
+				<a class="btn btn-primary b-save" href="#save"><i class="icon-refresh icon-white"></i> Save</a>
+			</div>
+		</div>
+	</nav>
+</div>

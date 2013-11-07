@@ -1,0 +1,7 @@
+.DS_Store
+.idea/
+node_modules
+*.sock
+tmp/
+public/css/app.css
+public/js/app.js

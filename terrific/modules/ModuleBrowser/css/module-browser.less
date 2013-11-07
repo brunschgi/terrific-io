@@ -1,0 +1,29 @@
+@media screen {
+	.mod-module-browser {
+
+		.iframe-wrap {
+			position: relative;
+			overflow: hidden;
+			height: 130px;
+		}
+
+		.cover {
+			position: absolute;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+			border: 0 !important;
+			z-index: 4000;
+		}
+
+		iframe {
+			width: 200%;
+			height: 200%;
+			border: 0;
+			background: white;
+			.scale(0.5);
+			.transform-origin(top left);
+		}
+	}
+}

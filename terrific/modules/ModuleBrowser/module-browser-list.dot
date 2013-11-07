@@ -1,0 +1,23 @@
+{{~ it.modules :module }}
+<li class="span4">
+	<div class="thumbnail">
+		<div class="iframe-wrap">
+			<a class="cover" href="#edit/{{= module._id }}"></a>
+			<iframe src="/api/modules/render/{{= module._id }}" allowtransparency="true" frameborder="0"
+					scrolling="no"/>
+			<div class="meta-overlay">
+				<h2>{{= module.name }}</h2>
+			</div>
+		</div>
+		<div class="meta">
+			<div class="user">
+				<a href="#user/{{= module.user._id }}">{{= module.user._id }}</a>
+			</div>
+			<ul class="stats">
+				<li class="views">{{= module.meta.views }} <i class="icon-views"></i></li>
+				<li class="favs">{{= module.meta.favs }} <i class="icon-favs"></i></li>
+			</ul>
+		</div>
+	</div>
+</li>
+{{~}}

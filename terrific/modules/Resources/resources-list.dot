@@ -1,0 +1,40 @@
+<h3>Module Specific</h3>
+<ul class="thumbnails">
+	{{~ it.resources :resource }}
+	{{? !resource.global }}
+	<li class="span4">
+		<div class="thumbnail">
+			<a href="{{= resource.src }}/{{= resource.name }}.{{= resource.type }}">{{= resource.name }}</a>
+			<ul class="stats">
+				<li class="size">{{= resource.size }}</li>
+				<li class="created"><i class="icon-calendar"></i> {{= moment(resource.created).format('L') }}</li>
+			</ul>
+		</div>
+	</li>
+	{{?}}
+	{{~}}
+</ul>
+
+<h3>Global</h3>
+<div class="input-append">
+	<input class="span2" type="text">
+	<button class="btn" type="button"><i class="icon-search"/></button>
+</div>
+<span class="help-block">Search for global modules</span>
+
+<ul class="thumbnails">
+	{{~ it.resources :resource }}
+	{{? resource.global }}
+	<li class="span4 resource" data-id="{{= resource._id }}">
+		<div class="thumbnail">
+			<a href="javascript:;" class="btn btn-danger delete-resource"><i class="icon-trash icon-white"></i></a>
+			<a href="/js/module-deps/global/{{= resource.name }}"><i class="icon-file"></i> {{= resource.name }}</a>
+			<ul class="stats">
+				<li class="size">{{= resource.size }}</li>
+				<li class="created"><i class="icon-calendar"></i> {{= moment(resource.created).format('L') }}</li>
+			</ul>
+		</div>
+	</li>
+	{{?}}
+	{{~}}
+</ul>

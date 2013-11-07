@@ -1,0 +1,5 @@
+<div class="mod mod-resources">
+	<input class="fileupload" type="file" name="files[]" data-url="/api/resources"/>
+
+	<div class="content"></div>
+</div>

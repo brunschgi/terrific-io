@@ -1,0 +1,10 @@
+{{? it.sections['header']}}
+    {{~it.sections['header'] :value }}
+    {{= it.t.module(value) }}
+    {{~}}
+{{?}}
+{{? it.sections['workspace']}}
+ {{~it.sections['workspace'] :value }}
+    {{= it.t.module(value) }}
+ {{~}}
+{{?}}

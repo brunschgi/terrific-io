@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{= it.module.name }}, Preview</title>
+    <script>
+        window.alert   = function(){};
+        window.confirm = function(){};
+        window.prompt  = function(){};
+        window.open    = function(){};
+        window.print   = function(){};
+        window.onerror = function(msg, url, line) { console.log(msg); return true; };
+    </script>
+    {{~ it.module.resources : resource  }}
+        {{ var src = '/js/module-deps/'; }}
+
+        {{? resource.global === true }}
+            {{ src += 'global/'; }}
+        {{??}}
+            {{ src += 'modules/' + it.module._id + '/'; }}
+        {{?}}
+
+        {{ src += resource.src + resource.name; }}
+
+        {{? resource.type === 'js' }}
+            <script type="text/javascript" src="{{= src }}"></script>
+        {{?}}
+    {{~}}
+    <style>
+        {{= it.module.css.content }}
+    </style>
+</head>
+<body>
+{{= it.module.html.content }}
+<script>
+    {{= it.module.js.content }}
+</script>
+</body>
+</html>
