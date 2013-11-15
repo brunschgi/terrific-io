@@ -17,6 +17,7 @@
     "passport-ldapauth": "latest",
     "jquery-file-upload-middleware": "latest",
     "connect-ensure-login": "latest",
+	"less" : "latest",
     "bunyan": "latest",
     "log4js" : "latest"
   },

@@ -34,21 +34,21 @@
 			html.on('change', function () {
 				clearTimeout(timeout);
 				timeout = setTimeout(function () {
-					self.renderPreview();
+					self.renderPreview('html');
 				}, 500);
 			});
 
 			css.on('change', function () {
 				clearTimeout(timeout);
 				timeout = setTimeout(function () {
-					self.renderPreview();
+					self.renderPreview('css');
 				}, 500);
 			});
 
 			js.on('change', function () {
 				clearTimeout(timeout);
 				timeout = setTimeout(function () {
-					self.renderPreview();
+					self.renderPreview('js');
 				}, 500);
 			});
 
@@ -93,6 +93,18 @@
 				}
 			});
 
+			// event handlers
+			$ctx.on('click', '.js-precompilers a', function() {
+				var $this = $(this);
+				var type = $this.closest('header').data('type');
+
+				if(type === 'css') {
+					css.getSession().setMode('ace/mode/' + $this.attr('href').substring(1));
+				}
+
+				return false;
+			});
+
 			callback();
 		},
 
@@ -108,68 +120,78 @@
 			this.js.setValue(data.js.content);
 		},
 
-		renderPreview: function () {
+		renderPreview: function (changed) {
 			var self = this,
 				$ctx = this.$ctx,
 				html = this.html,
 				css = this.css,
-				js = this.js;
+				js = this.js,
+				htmlContent = html.getValue(),
+				cssContent = css.getValue(),
+				jsContent = js.getValue,
+				deferred = $.Deferred();
+
+
+
+			// preprocess if necessary
+			if(changed === 'css' && css.getSession().getMode().$id === 'ace/mode/less') {
+				$.ajax({
+					type: 'post',
+					url: '/api/modules/precompile',
+					timeout: 5000,
+					data: {
+						css: {
+							content: cssContent,
+							type: 'less'
+						}
+					},
+					success: function (data) {
+						cssContent = data.processed;
+						deferred.resolve();
+					}
+				});
+			}
+			else {
+				deferred.resolve();
+			}
 
 			// initial rendering
 			var module = this.module;
 
-			var iframe = $ctx.find('iframe')[0],
-				doc = (iframe.contentWindow || iframe.contentDocument).document;
 
-			doc.open();
-			doc.write('<!doctype html><html><head>');
+			deferred.done(function() {
+				var iframe = $ctx.find('iframe')[0],
+					doc = (iframe.contentWindow || iframe.contentDocument).document;
 
-			// error handler
-			doc.write('<script type="text/javascript">' +
-				'window.alert = function(){};' +
-				'window.confirm = function(){};' +
-				'window.prompt = function(){};' +
-				'window.open = function(){};' +
-				'window.print = function(){};' +
-				'window.onerror = function(msg, url, line) { console.log(msg); return true; };' +
-				'</script>');
+				doc.open();
+				doc.write('<!doctype html><html><head>');
 
-			// dependencies
-			for (var i = 0, len = module.resources.length; i < len; i++) {
-				var resource = module.resources[i];
+				// error handler
+				doc.write('<script type="text/javascript">' +
+					'window.alert = function(){};' +
+					'window.confirm = function(){};' +
+					'window.prompt = function(){};' +
+					'window.open = function(){};' +
+					'window.print = function(){};' +
+					'window.onerror = function(msg, url, line) { console.log(msg); return true; };' +
+					'</script>');
 
-				var src = '/js/module-deps/';
-				if (resource.global === true) {
-					src += 'global/'
-				}
-				else {
-					src += 'modules/' + module._id + '/'
-				}
-				src += resource.src + resource.name;
+				// styles
+				doc.write('<style>' + cssContent + '</style>');
 
-				if (resource.type === 'js') {
-					doc.write('<script type="text/javascript" src="' + src + '"></script>');
-				}
-				else if (resource.type === 'css') {
+				doc.write('</head><body>');
 
-				}
-			}
+				// markup
+				doc.write(htmlContent);
 
-			// styles
-			doc.write('<style>' + css.getValue() + '</style>');
+				// js
+				doc.write('<script>' +  jsContent + '</script>');
+				doc.write('</body></html>');
+				doc.close();
 
-			doc.write('</head><body>');
-
-			// markup
-			doc.write(html.getValue());
-
-			// js
-			doc.write('<script>' + js.getValue() + '</script>');
-			doc.write('</body></html>');
-			doc.close();
-
-			// set iframe height
-			iframe.height = $(doc).height();
+				// set iframe height
+				iframe.height = $(doc).height();
+			});
 		}
 	});
 })();

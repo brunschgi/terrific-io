@@ -1,40 +1,41 @@
-<h3>Module Specific</h3>
-<ul class="thumbnails">
-	{{~ it.resources :resource }}
-	{{? !resource.global }}
-	<li class="span4">
-		<div class="thumbnail">
-			<a href="{{= resource.src }}/{{= resource.name }}.{{= resource.type }}">{{= resource.name }}</a>
-			<ul class="stats">
-				<li class="size">{{= resource.size }}</li>
-				<li class="created"><i class="icon-calendar"></i> {{= moment(resource.created).format('L') }}</li>
-			</ul>
-		</div>
-	</li>
-	{{?}}
+{{## def.resource_item:
+<li class="span4 resource" data-id="{{= resource._id }}">
+	<div class="thumbnail">
+		{{? is_draggable }}
+			<a href="javascript:;" class="btn drag"><i class="icon-drag"></i> drag</a>
+		{{?}}
+		{{? is_deletable }}
+			<a href="javascript:;" class="btn btn-danger delete-resource"><i class="icon-trash icon-white"></i></a>
+		{{?}}
+		<a href="{{= resource.src }}/{{= resource.name }}.{{= resource.type }}">{{= resource.name }}</a>
+		<ul class="stats">
+			<li class="size">{{= resource.size }}</li>
+			<li class="created"><i class="icon-calendar"></i> {{= moment(resource.created).format('L') }}</li>
+			{{? resource.global }}
+				<li><i class="icon-globe"></i> Global</li>
+			{{?}}
+		</ul>
+	</div>
+</li>
+#}}
+
+<h3>Module Resources</h3>
+<h4>JS</h4>
+<ul class="thumbnails local">
+	{{~ it.local :resource }}
+		{{ var is_deletable = true; }}
+		{{ var is_draggable = true; }}
+		{{#def.resource_item}}
 	{{~}}
 </ul>
 
-<h3>Global</h3>
-<div class="input-append">
-	<input class="span2" type="text">
-	<button class="btn" type="button"><i class="icon-search"/></button>
-</div>
-<span class="help-block">Search for global modules</span>
-
+<h3>Global Resources</h3>
+<span class="help-block">You want to use some of our global resources in your Module? Drag them to your project.</span>
+<h4>JS</h4>
 <ul class="thumbnails">
-	{{~ it.resources :resource }}
-	{{? resource.global }}
-	<li class="span4 resource" data-id="{{= resource._id }}">
-		<div class="thumbnail">
-			<a href="javascript:;" class="btn btn-danger delete-resource"><i class="icon-trash icon-white"></i></a>
-			<a href="/js/module-deps/global/{{= resource.name }}"><i class="icon-file"></i> {{= resource.name }}</a>
-			<ul class="stats">
-				<li class="size">{{= resource.size }}</li>
-				<li class="created"><i class="icon-calendar"></i> {{= moment(resource.created).format('L') }}</li>
-			</ul>
-		</div>
-	</li>
-	{{?}}
+	{{~ it.global :resource }}
+		{{ var is_deletable = false; }}
+		{{ var is_draggable = true; }}
+		{{#def.resource_item}}
 	{{~}}
 </ul>

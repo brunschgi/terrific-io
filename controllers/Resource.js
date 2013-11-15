@@ -1,10 +1,25 @@
 var Resource = require('../models/Resource');
 
-module.exports = function (app) {
+module.exports = function (app, upload) {
 
 	return {
-		list: function (req, res, next) {
-			Resource.find(function (err, list) {
+		search: function (req, res, next) {
+			var query = Resource.find();
+
+			/* filters */
+
+			// search only global resources
+			if (req.query.global === 'false') {
+				query.where('global').equals(false);
+			}
+			else {
+				query.where('global').equals(true);
+			}
+
+			// sort lexically
+			query.sort({ name: 'asc' });
+
+			query.exec(function (err, list) {
 				if (err) next(err);
 				res.json(list);
 			});
@@ -17,9 +32,9 @@ module.exports = function (app) {
 				size: req.body.size,
 				type: req.body.type
 			}).save(function (err, doc) {
-				if (err) next(err);
-				res.json(doc);
-			});
+					if (err) next(err);
+					res.json(doc);
+				});
 		},
 
 		delete: function (req, res, next) {
@@ -27,6 +42,17 @@ module.exports = function (app) {
 				if (err) next(err);
 				res.send();
 			});
+		},
+
+		upload: function (req, res, next) {
+			upload.fileHandler({
+				uploadDir: function () {
+					return __dirname + '/../public/uploads'
+				},
+				uploadUrl: function () {
+					return '/uploads'
+				}
+			})(req, res, next);
 		}
 	}
 };

@@ -3,7 +3,7 @@ var Tag = require('../models/Tag');
 module.exports = function (app) {
 
 	return {
-		list: function (req, res, next) {
+		search: function (req, res, next) {
 			Tag.find(function (err, list) {
 				if (err) next(err);
 				res.json(list);

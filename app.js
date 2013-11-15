@@ -75,8 +75,7 @@ app.get('/login', site.login);
 
 // user
 var user = require('./controllers/User')(app);
-app.get('/api/users', /* ensureLoggedIn('/login'), */ user.list);
-app.get('/api/users/search', /* ensureLoggedIn('/login'), */ user.search);
+app.get('/api/users', /* ensureLoggedIn('/login'), */ user.search);
 app.post('/api/users', /* ensureLoggedIn('/login'), */ user.create);
 app.get('/api/users/:username', /* ensureLoggedIn('/login'), */ user.read);
 app.put('/api/users/:username', /* ensureLoggedIn('/login'), */ user.update);
@@ -92,44 +91,20 @@ app.put('/api/modules/:id', /* ensureLoggedIn('/login'), */ module.update);
 app.delete('/api/modules/:id', /* ensureLoggedIn('/login'), */ module.delete);
 app.put('/api/modules/:id/tags', /* ensureLoggedIn('/login'), */ module.updateTags);
 app.put('/api/modules/:id/resources', /* ensureLoggedIn('/login'), */ module.updateResources);
+app.post('/api/modules/precompile', /* ensureLoggedIn('/login'), */ module.precompile);
 
 // tag
 var tag = require('./controllers/Tag')(app);
-app.get('/api/tags', /* ensureLoggedIn('/login'), */ tag.list);
+app.get('/api/tags', /* ensureLoggedIn('/login'), */ tag.search);
 app.post('/api/tags', /* ensureLoggedIn('/login'), */ tag.create);
 app.delete('/api/tags/:id', /* ensureLoggedIn('/login'), */ tag.delete);
 
 // resource
-// configure upload middleware
-upload.configure({
-	uploadDir: __dirname + '/public/js/module-deps',
-	uploadUrl: '/api/resources'
-});
-
-app.use('/api', function (req, res, next) {
-	req.filemanager = upload.fileManager();
-	next();
-});
-
-app.use('/api/resources', function (req, res, next) {
-	// move file
-	logger.debug(req);
-
-	var files = req.files.files;
-
-	for (var i = 0, len = files.length; i < len; i++) {
-		req.filemanager.move(files[0].name, 'project1', function (err, result) {
-			if (err) next(err);
-		});
-	}
-
-});
-
-var resource = require('./controllers/Resource')(app);
-app.get('/api/resources', /* ensureLoggedIn('/login'), */ resource.list);
-app.post('/api/resources/dfd', /* ensureLoggedIn('/login'), */ resource.create);
+var resource = require('./controllers/Resource')(app, upload);
+app.get('/api/resources', /* ensureLoggedIn('/login'), */ resource.search);
+app.post('/api/resources', /* ensureLoggedIn('/login'), */ resource.create);
 app.delete('/api/resources/:id', /* ensureLoggedIn('/login'), */ resource.delete);
-
+app.use('/api/resources/upload', resource.upload);
 
 /**
  * Passport configuration
@@ -197,7 +172,6 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (id, done) {
 	done(null, { id: 'dummy', name: 'Dummy User' });
 });
-
 
 // create server
 http.createServer(app).listen(app.get('port'), function () {

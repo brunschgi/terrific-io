@@ -2,8 +2,8 @@
     <div class="row-fluid">
         <div class="span4">
             <div class="code-box">
-                <header>
-                    <div class="settings">
+                <header data-type="html">
+                    <div class="settings" >
                     </div>
                 </header>
                 <code class="html"></code>
@@ -11,12 +11,12 @@
         </div>
         <div class="span4">
             <div class="code-box">
-                <header>
+                <header data-type="css">
                     <div class="settings">
                         <h3>Precompilers</h3>
-                        <ul class="precompilers">
-                            <li><a href="#text/css">None</a></li>
-                            <li><a href="#text/x-less">Less</a></li>
+                        <ul class="js-precompilers">
+                            <li><a href="#css">None</a></li>
+                            <li><a href="#less">Less</a></li>
                         </ul>
                     </div>
                 </header>
@@ -25,7 +25,7 @@
         </div>
         <div class="span4">
             <div class="code-box">
-                <header>
+                <header data-type="js">
                     <div class="settings">
                     </div>
                 </header>

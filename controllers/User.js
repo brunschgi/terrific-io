@@ -3,32 +3,15 @@ var User = require('../models/User');
 module.exports = function (app) {
 
 	return {
-		list: function (req, res, next) {
-			var query = User.find();
-
-			// only list active users
-			query.where('active').equals(true);
-
-			// sort lexically
-			query.sort({ username: 'asc' });
-
-			query.exec(function (err, list) {
-				if (err) next(err);
-				res.json(list);
-			});
-		},
-
 		search: function (req, res, next) {
 			var query = User.find();
 
 
-			if (req.query.active) {
-				if (req.query.active === 'true') {
-					query.where('active').equals(true);
-				}
-				else {
-					query.where('active').equals(false);
-				}
+			if (req.query.active === 'false') {
+				query.where('active').equals(false);
+			}
+			else {
+				query.where('active').equals(true);
 			}
 
 			// sort lexically

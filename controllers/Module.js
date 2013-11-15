@@ -1,5 +1,6 @@
 var Module = require('../models/Module'),
-	Tag = require('../models/Tag');
+	Tag = require('../models/Tag'),
+	less = require('less');
 
 module.exports = function (app) {
 
@@ -156,6 +157,17 @@ module.exports = function (app) {
 				if (err) next(err);
 				res.send();
 			});
+		},
+
+		precompile: function(req, res, next) {
+			console.log(req.body.css);
+			if (req.body.css) {
+				if (req.body.css.type == 'less') {
+					less.render(req.body.css.content, function (e, css) {
+						res.json({ "processed" : css });
+					});
+				}
+			}
 		}
 	}
 };
