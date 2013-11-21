@@ -18,6 +18,7 @@
     "jquery-file-upload-middleware": "latest",
     "connect-ensure-login": "latest",
 	"less" : "latest",
+	"node-sass" : "latest",
     "bunyan": "latest",
     "log4js" : "latest"
   },

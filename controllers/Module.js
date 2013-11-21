@@ -1,6 +1,7 @@
 var Module = require('../models/Module'),
 	Tag = require('../models/Tag'),
-	less = require('less');
+	less = require('less'),
+	sass = require('node-sass');
 
 module.exports = function (app) {
 
@@ -159,13 +160,21 @@ module.exports = function (app) {
 			});
 		},
 
-		precompile: function(req, res, next) {
-			console.log(req.body.css);
+		precompile: function (req, res, next) {
 			if (req.body.css) {
 				if (req.body.css.type == 'less') {
 					less.render(req.body.css.content, function (e, css) {
-						res.json({ "processed" : css });
+						res.json({ "processed": css });
 					});
+				}
+				else if (req.body.css.type == 'sass') {
+					sass.render({
+						data: req.body.css.content,
+						success: function (css) {
+							res.json({"processed": css});
+						}
+					});
+
 				}
 			}
 		}

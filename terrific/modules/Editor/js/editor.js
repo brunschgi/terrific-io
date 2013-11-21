@@ -134,22 +134,25 @@
 
 
 			// preprocess if necessary
-			if(changed === 'css' && css.getSession().getMode().$id === 'ace/mode/less') {
-				$.ajax({
-					type: 'post',
-					url: '/api/modules/precompile',
-					timeout: 5000,
-					data: {
-						css: {
-							content: cssContent,
-							type: 'less'
+			if(changed === 'css') {
+				var mode = css.getSession().getMode().$id.split('/')[2];
+				if(mode == 'less' || mode == 'sass') {
+					$.ajax({
+						type: 'post',
+						url: '/api/modules/precompile',
+						timeout: 5000,
+						data: {
+							css: {
+								content: cssContent,
+								type: mode
+							}
+						},
+						success: function (data) {
+							cssContent = data.processed;
+							deferred.resolve();
 						}
-					},
-					success: function (data) {
-						cssContent = data.processed;
-						deferred.resolve();
-					}
-				});
+					});
+				}
 			}
 			else {
 				deferred.resolve();
