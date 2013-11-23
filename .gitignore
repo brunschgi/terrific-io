@@ -5,3 +5,4 @@ node_modules
 tmp/
 public/css/app.css
 public/js/app.js
+public/uploads/

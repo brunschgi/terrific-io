@@ -1,7 +1,6 @@
 var Module = require('../models/Module'),
 	Tag = require('../models/Tag'),
-	less = require('less'),
-	sass = require('node-sass');
+	Precompiler = require('../services/Precompiler');
 
 module.exports = function (app) {
 
@@ -79,7 +78,14 @@ module.exports = function (app) {
 				.populate('resources')
 				.exec(function (err, doc) {
 					if (err) next(err);
-					res.render('module.html', { layout: false, module: doc });
+
+					Precompiler.compile(doc.html.content, doc.html.type, function(htmlContent) {
+						Precompiler.compile(doc.css.content, doc.css.type, function(cssContent) {
+							Precompiler.compile(doc.js.content, doc.js.type, function(jsContent) {
+								res.render('module.html', { layout: false, module: doc, htmlContent: htmlContent, cssContent: cssContent, jsContent: jsContent });
+							});
+						});
+					});
 				});
 		},
 
@@ -161,22 +167,9 @@ module.exports = function (app) {
 		},
 
 		precompile: function (req, res, next) {
-			if (req.body.css) {
-				if (req.body.css.type == 'less') {
-					less.render(req.body.css.content, function (e, css) {
-						res.json({ "processed": css });
-					});
-				}
-				else if (req.body.css.type == 'sass') {
-					sass.render({
-						data: req.body.css.content,
-						success: function (css) {
-							res.json({"processed": css});
-						}
-					});
-
-				}
-			}
+			Precompiler.compile(req.body.content, req.body.type, function(compiled) {
+				res.json({ "compiled": compiled });
+			});
 		}
 	}
 };

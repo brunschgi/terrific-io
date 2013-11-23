@@ -12,7 +12,7 @@ var schema = new mongoose.Schema({
 		content: { type: String, default: "" }
 	},
 	js: {
-		type: { type: String, default: "js"},
+		type: { type: String, default: "javascript"},
 		content: { type: String, default: "" }
 	},
 	user: { type: String, ref: 'User', default: 'brunschgi' },
