@@ -1,0 +1,50 @@
+HOST: http://terrific.io
+
+--- terrific.io API ---
+---
+
+---
+
+--
+User Resources
+--
+List users.
+GET /users
+< 200
+< Content-Type: application/json
+{ "users": [
+    { "name" : "name" }
+  ]
+}
+
+Create a new user.
+POST /users
+> Content-Type: application/json
+{ "name": "name" }
+< 200
+< Content-Type: application/json
+{ "user": { 
+    "name" : name 
+  } 
+}
+
+Get a user
+GET /user/{id}
+< 200
+{ "name" : "name" }
+
+Update a user
+PUT /user/{id}
+> Content-Type: application/json
+{ "name": "name" }
+< 200
+< Content-Type: application/json
+{ "user": { 
+    "name" : name 
+  } 
+}
+
+Delete a user
+DELETE /user/{id}
+< 200
+{ "success" : boolean }
