@@ -115,9 +115,9 @@ app.get('/logout', function (req, res) {
 
 // configure twitter
 passport.use(new TwitterStrategy({
-		consumerKey: 'Gy7wIuajjHGpgTJxdbB1eg',
-		consumerSecret: 'ivpsmlkmpUOqWtGYtpiSO2uvO6l7cm4O9xKM2EbzcI',
-		callbackURL: 'http://127.0.0.1:3000/auth/twitter/callback'
+		consumerKey: cfg.auth.twitter.consumerKey,
+		consumerSecret: cfg.auth.twitter.consumerSecret,
+		callbackURL: cfg.auth.twitter.callbackURL
 	},
 	function (token, tokenSecret, profile, done) {
 		done(null, { id: 'dummy', name: 'Dummy User' });
@@ -145,11 +145,11 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter', {
 // configure ldap
 passport.use(new LdapStrategy({
 		server: {
-			url: 'ldap://ldap1.namics.com:389',
-			adminDn: 'cn=ldapconnect,o=namics',
-			adminPassword: '1dap4u',
-			searchBase: 'o=namics',
-			searchFilter: '(!(|(!(objectClass=dominoPerson))(!(dominocertificate=*))))',
+			url: cfg.auth.ldap.url,
+			adminDn:  cfg.auth.ldap.adminDn,
+			adminPassword:  cfg.auth.ldap.adminPassword,
+			searchBase: cfg.auth.ldap.searchBase,
+			searchFilter:  cfg.auth.ldap.searchFilter,
 			log4js: require('log4js'),
 			verbose: true
 		}

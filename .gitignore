@@ -6,3 +6,4 @@ tmp/
 public/css/app.css
 public/js/app.js
 public/uploads/
+config/config.production.js
