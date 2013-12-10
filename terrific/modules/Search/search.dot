@@ -1,0 +1,5 @@
+<div class="mod mod-search">
+	<form>
+		<input type="text" class="search-query" placeholder="Search">
+	</form>
+</div>

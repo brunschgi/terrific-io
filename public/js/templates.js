@@ -36,4 +36,10 @@ var out='<h3>Module Resources</h3><h4>JS</h4><ul class="thumbnails local">';var 
 },
       resources:function anonymous(it) {
 var out='<div class="mod mod-resources"><input class="fileupload" type="file" name="files[]" data-url="/api/resources/upload"/><div class="content"></div></div>';return out;
+} },
+    Search:{ search:function anonymous(it) {
+var out='<div class="mod mod-search"><form><input type="text" class="search-query" placeholder="Search"></form></div>';return out;
+} },
+    SearchResults:{ "search-results":function anonymous(it) {
+var out='<div class="mod mod-search-results">Search Results</div>';return out;
 } } } };});

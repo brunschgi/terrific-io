@@ -72,6 +72,17 @@ require([
             bootstrap();
         });
 
+		crossroads.addRoute('/search', function () {
+			// define view modules
+			sections['header'] = ['Navigation.navigation'];
+			sections['workspace'] = ['Search.search', 'SearchResults.search-results'];
+
+			// render view
+			t.view($content, 'default', sections);
+
+			bootstrap();
+		});
+
         crossroads.addRoute('/edit/{id}', function (id) {
             // define view modules
             sections['header'] = ['Navigation.navigation-editor'];
