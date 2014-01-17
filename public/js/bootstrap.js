@@ -1,129 +1,159 @@
 requirejs.config({
-    // base url
-    baseUrl: '/js/lib',
+	// base url
+	baseUrl: '/js/lib',
 
-    // paths
-    paths: {
-        // jQuery
-        jquery: 'jquery-1.10.1.min'
-    },
+	// paths
+	paths: {
+		// jQuery
+		jquery: 'jquery-1.10.1.min'
+	},
 
-    shim: {
-        'terrific': {
-            // These script dependencies should be loaded before loading terrific
-            deps: ['jquery'],
+	shim: {
+		'terrific': {
+			// These script dependencies should be loaded before loading terrific
+			deps: ['jquery'],
 
-            // Once loaded, use the global 'Tc' as the module value
-            exports: 'Tc'
-        },
-        '../app' : {
-            deps: ['terrific']
-        },
-        'ace/ace' : {
-            exports: 'ace'
-        }
-    }
+			// Once loaded, use the global 'Tc' as the module value
+			exports: 'Tc'
+		},
+		'../app': {
+			deps: ['terrific']
+		},
+		'ace/ace': {
+			exports: 'ace'
+		}
+	}
 });
 
 require([
-    // base libraries
-    'jquery', // jquery version
-    'crossroads.min', // client side routing framework
-    'hasher.min', // hash change framework
-    'terrific', // terrific js for modularization
-    'terrific-utils', // client side terrific utils'
-    'doT.min', // client side template engine
-    'moment.min',
-    'jquery.ui.widget',
-    'jquery.fileupload',
-    '../app' // all terrific stuff
+	// base libraries
+	'jquery', // jquery version
+	'crossroads.min', // client side routing framework
+	'hasher.min', // hash change framework
+	'terrific', // terrific js for modularization
+	'terrific-utils', // client side terrific utils'
+	'doT.min', // client side template engine
+	'moment.min',
+	'jquery.ui.widget',
+	'jquery.fileupload',
+	'../app' // all terrific stuff
 ], function ($, crossroads, hasher) {
-    $(document).ready(function() {
+	$(document).ready(function () {
+		"use strict";
 
-        "use strict";
+		// make hasher globally available
+		window.hasher = hasher;
 
-        var application = null;
-        var sections = {};
-        var $content = $('#content');
+		var application = null;
+		var sections = {};
+		var $content = $('#content');
 
-        /* bootstrap */
-        var bootstrap = function (cfg) {
-            cfg = cfg || {};
+		/* bootstrap */
+		var bootstrap = function (cfg) {
+			cfg = cfg || {};
 
-            var $page = $('body'),
-                config = $.extend({
-                    baseUrl: $page.data('baseurl')
-                }, cfg);
+			var $page = $('body'),
+				config = $.extend({
+					baseUrl: $page.data('baseurl')
+				}, cfg);
 
-            application = new Tc.Application($page, config);
-            application.registerModules();
-            application.start();
-        };
+			application = new Tc.Application($page, config);
+			application.registerModules();
 
-        /* routes */
-        crossroads.addRoute('/', function () {
-            // define view modules
-            sections['header'] = ['Navigation.navigation'];
-            sections['workspace'] = ['ModuleBrowser.module-browser'];
+			if (typeof cfg.end === 'function') {
+				application.end(cfg.end);
+			}
 
-            // render view
-            t.view($content, 'default', sections);
+			application.start();
+		};
 
-            bootstrap();
-        });
-
-		crossroads.addRoute('/search', function () {
+		/* routes */
+		crossroads.addRoute('/', function () {
 			// define view modules
 			sections['header'] = ['Navigation.navigation'];
-			sections['workspace'] = ['Search.search', 'SearchResults.search-results'];
+			sections['workspace'] = ['ModuleBrowser.module-browser'];
 
 			// render view
 			t.view($content, 'default', sections);
 
-			bootstrap();
+			bootstrap({ end: function () {
+				// start module search
+				application.connectors['search'].notify(null, 'onSearch');
+			}});
 		});
 
-        crossroads.addRoute('/edit/{id}', function (id) {
-            // define view modules
-            sections['header'] = ['Navigation.navigation-editor'];
-            sections['workspace'] = ['Editor.editor'];
+		crossroads.addRoute('/search/:q*:', function (q) {
+			// define view modules
+			sections['header'] = ['Navigation.navigation'];
+			sections['workspace'] = ['Search.search', 'ModuleBrowser.module-browser'];
 
-            // render view
-            t.view($content, 'editor', sections);
+			// render view
+			t.view($content, 'default', sections);
 
-            bootstrap({ id: id });
-        });
+			// build query object
+			var params = q.split('/');
+			var query = {};
 
-        crossroads.addRoute('/edit/{id}/resources', function (id) {
-            // define view modules
-            sections['header'] = ['Navigation.navigation-editor-resources'];
-            sections['workspace'] = ['Resources.resources'];
+			for(var i = 0, len = params.length; i < len; i++) {
+				var param = params[i].split('=');
 
-            // render view
-            t.view($content, 'default', sections);
+				if(param['value'] != '') {
+					query[param[0]] = param[1];
+				}
+			}
 
-            bootstrap({ id: id });
-        });
+			console.log(query);
+
+			bootstrap({ end: function () {
+				// start module search
+				application.connectors['search'].notify(null, 'onSearch', query);
+			}});
+		});
+
+		crossroads.addRoute('/edit/{id}', function (id) {
+			// define view modules
+			sections['header'] = ['Navigation.navigation-editor'];
+			sections['workspace'] = ['Editor.editor'];
+
+			// render view
+			t.view($content, 'editor', sections);
+
+			bootstrap({ id: id });
+		});
+
+		crossroads.addRoute('/edit/{id}/resources', function (id) {
+			// define view modules
+			sections['header'] = ['Navigation.navigation-editor-resources'];
+			sections['workspace'] = ['Resources.resources'];
+
+			// render view
+			t.view($content, 'default', sections);
+
+			bootstrap({ id: id });
+		});
 
 
-        crossroads.addRoute('/user/{id}', function (id) {
-            // define view modules
-            sections['header'] = ['Navigation.navigation'];
-            sections['workspace'] = ['Profile.profile', 'ModuleBrowser.module-browser'];
+		crossroads.addRoute('/user/{id}', function (id) {
+			// define view modules
+			sections['header'] = ['Navigation.navigation'];
+			sections['workspace'] = ['Profile.profile', 'ModuleBrowser.module-browser'];
 
-            // render view
-            t.view($content, 'editor', sections);
+			// render view
+			t.view($content, 'editor', sections);
 
-            bootstrap({ id: id, query: { user : id }});
-        });
+			bootstrap({ id: id, end: function () {
+				// start search for user
+				application.connectors['search'].notify(null, 'onSearch', { user: id });
+			}});
+		});
 
-        /* setup routing system */
-        function parseHash(newHash, oldHash) {
-            crossroads.parse(newHash);
-        }
+		/* setup routing system */
+		function parseHash(newHash, oldHash) {
+			crossroads.parse(newHash);
+		}
 
-        hasher.initialized.add(parseHash); //parse initial hash
-        hasher.changed.add(parseHash); //parse hash changes
-        hasher.init(); //start listening for history change
-    });
+		hasher.initialized.add(parseHash); //parse initial hash
+		hasher.changed.add(parseHash); //parse hash changes
+		hasher.init(); //start listening for history change
+	});
 });

@@ -1,5 +1,7 @@
 <div class="mod mod-search">
-	<form>
-		<input type="text" class="search-query" placeholder="Search">
+	<form action="#/search" class="form-search">
+		<input type="search" name="q" class="search-query" placeholder="Search">
+		<input type="search" name="user" class="search-query" placeholder="User">
+		<button type="submit" class="btn">Search</button>
 	</form>
 </div>

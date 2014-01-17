@@ -15,6 +15,17 @@ module.exports = function (app) {
 				query.where('meta.pick').equals(true);
 			}
 
+			// search query
+			if (req.query.q) {
+				query.where('description').regex(/ + req.query.q + /);
+			}
+
+			// search by name
+			if (req.query.name) {
+				query.where('name').regex(/ + req.query.name + /);
+			}
+
+			// show only modules for a given user
 			if (req.query.user) {
 				query.where('user').equals(req.query.user);
 			}

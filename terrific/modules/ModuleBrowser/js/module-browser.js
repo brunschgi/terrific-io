@@ -7,15 +7,22 @@
 		},
 
 		on: function (callback) {
+			this.sandbox.subscribe('search', this);
+
+			callback();
+		},
+
+		onSearch: function (data) {
+			data = data || {};
+
 			var self = this,
 				$ctx = this.$ctx,
 				tpl = this.tpl,
-				cfg = this.sandbox.getConfig(),
 				query = [];
 
 			// build query string
-			for (var key in cfg['query']) {
-				var value = cfg['query'][key];
+			for(var key in data) {
+				var value = data[key];
 				query.push(key + '=' + value);
 			}
 
@@ -26,11 +33,6 @@
 					$('.modules', $ctx).html(tpl({ 'modules': data }));
 				}
 			});
-
-			callback();
-		},
-
-		after: function () {
 		}
 	});
 })();

@@ -11,19 +11,19 @@ var out='Default';return out;
 var out='<div class="mod mod-editor"> <div class="row-fluid"> <div class="span4"> <div class="code-box"> <header data-type="html"> <div class="settings" > </div> </header> <code class="html"></code> </div> </div> <div class="span4"> <div class="code-box"> <header data-type="css"> <div class="settings"> <h3>Precompilers</h3> <ul class="js-precompilers"> <li><a href="#css">None</a></li> <li><a href="#less">Less</a></li><li><a href="#sass">SASS</a></li> </ul> </div> </header> <code class="css"></code> </div> </div> <div class="span4"> <div class="code-box"> <header data-type="js"> <div class="settings"> </div> </header> <code class="js"></code> </div> </div> </div> <div class="row-fluid"> <iframe sandbox="allow-scripts allow-same-origin allow-pointer-lock" allowtransparency="true" frameborder="0" scrolling="no"></iframe> </div></div>';return out;
 } },
     ModuleBrowser:{ "module-browser-list":function anonymous(it) {
-var out='';var arr1=it.modules;if(arr1){var module,i1=-1,l1=arr1.length-1;while(i1<l1){module=arr1[i1+=1];out+='<li class="span4"><div class="thumbnail"><div class="iframe-wrap"><a class="cover" href="#edit/'+( module._id )+'"></a><iframe src="/api/modules/render/'+( module._id )+'" allowtransparency="true" frameborder="0"scrolling="no"/><div class="meta-overlay"><h2>'+( module.name )+'</h2></div></div><div class="meta"><div class="user"><a href="#user/'+( module.user._id )+'">'+( module.user._id )+'</a></div><ul class="stats"><li class="views">'+( module.meta.views )+' <i class="icon-views"></i></li><li class="favs">'+( module.meta.favs )+' <i class="icon-favs"></i></li></ul></div></div></li>';} } return out;
+var out='';var arr1=it.modules;if(arr1){var module,i1=-1,l1=arr1.length-1;while(i1<l1){module=arr1[i1+=1];out+='<li class="span4"><div class="thumbnail"><div class="iframe-wrap"><a class="cover" href="#/edit/'+( module._id )+'"></a><iframe src="/api/modules/render/'+( module._id )+'" allowtransparency="true" frameborder="0"scrolling="no"/><div class="meta-overlay"><h2>'+( module.name )+'</h2></div></div><div class="meta"><div class="user"><a href="#/user/'+( module.user._id )+'">'+( module.user._id )+'</a></div><ul class="stats"><li class="views">'+( module.meta.views )+' <i class="icon-views"></i></li><li class="favs">'+( module.meta.favs )+' <i class="icon-favs"></i></li></ul></div></div></li>';} } return out;
 },
       "module-browser":function anonymous(it) {
 var out='<div class="mod mod-module-browser"><ul class="modules thumbnails"></ul></div>';return out;
 } },
     Navigation:{ "navigation-editor-resources":function anonymous(it) {
-var out='<div class="mod mod-navigation"><nav class="navbar"><div class="navbar-inner"><a class="brand" href="#">terrific.io</a><ul class="nav"><li class="active"><a href="#">Browse</a></li><li><a href="#search">Search</a></li></ul><div class="pull-right"><a class="btn btn-info b-back" href="javascript:;"><i class="icon-circle-arrow-left icon-white"></i>Back to Editor</a><a class="btn btn-primary b-resource" href="javascript:;"><i class="icon-upload icon-white"></i> AddResource</a></div></div></nav></div>';return out;
+var out='<div class="mod mod-navigation"><nav class="navbar"><div class="navbar-inner"><a class="brand" href="#/">terrific.io</a><ul class="nav"><li class="active"><a href="#/">Browse</a></li><li><a href="#/search">Search</a></li></ul><div class="pull-right"><a class="btn btn-info b-back" href="javascript:;"><i class="icon-circle-arrow-left icon-white"></i>Back to Editor</a><a class="btn btn-primary b-resource" href="javascript:;"><i class="icon-upload icon-white"></i> AddResource</a></div></div></nav></div>';return out;
 },
       "navigation-editor":function anonymous(it) {
-var out='<div class="mod mod-navigation"><nav class="navbar"><div class="navbar-inner"><a class="brand" href="#">terrific.io</a><ul class="nav"><li class="active"><a href="#">Browse</a></li><li><a href="#search">Search</a></li></ul><div class="pull-right"><a class="btn btn-info b-resources" href="#add"><i class="icon-upload icon-white"></i> Resources</a><a class="btn btn-primary b-save" href="#save"><i class="icon-refresh icon-white"></i> Save</a></div></div></nav></div>';return out;
+var out='<div class="mod mod-navigation"><nav class="navbar"><div class="navbar-inner"><a class="brand" href="#/">terrific.io</a><ul class="nav"><li class="active"><a href="#/">Browse</a></li><li><a href="#/search">Search</a></li></ul><div class="pull-right"><a class="btn btn-info b-resources" href="#add"><i class="icon-upload icon-white"></i> Resources</a><a class="btn btn-primary b-save" href="#save"><i class="icon-refresh icon-white"></i> Save</a></div></div></nav></div>';return out;
 },
       navigation:function anonymous(it) {
-var out='<div class="mod mod-navigation"><nav class="navbar"><div class="navbar-inner"><a class="brand" href="#">terrific.io</a><ul class="nav"><li class="active"><a href="#">Browse</a></li><li><a href="#search">Search</a></li></ul><div class="pull-right"><a class="btn btn-primary b-create" href="#create"><i class="icon-pencil icon-white"></i> New Module</a></div></div></nav></div>';return out;
+var out='<div class="mod mod-navigation"><nav class="navbar"><div class="navbar-inner"><a class="brand" href="#/">terrific.io</a><ul class="nav"><li ';if(window.location.hash == ''){out+='class="active"';}out+='><a href="#/">Browse</a></li><li ';if(window.location.hash == '#search'){out+='class="active"';}out+='><a href="#/search">Search</a></li></ul><div class="pull-right"><a class="btn btn-primary b-create" href="#/create"><i class="icon-pencil icon-white"></i> New Module</a></div></div></nav></div>';return out;
 } },
     Profile:{ "profile-details":function anonymous(it) {
 var out='<div class="mod mod-profile"></div>';return out;
@@ -38,8 +38,5 @@ var out='<h3>Module Resources</h3><h4>JS</h4><ul class="thumbnails local">';var 
 var out='<div class="mod mod-resources"><input class="fileupload" type="file" name="files[]" data-url="/api/resources/upload"/><div class="content"></div></div>';return out;
 } },
     Search:{ search:function anonymous(it) {
-var out='<div class="mod mod-search"><form><input type="text" class="search-query" placeholder="Search"></form></div>';return out;
-} },
-    SearchResults:{ "search-results":function anonymous(it) {
-var out='<div class="mod mod-search-results">Search Results</div>';return out;
+var out='<div class="mod mod-search"><form action="#/search" class="form-search"><input type="search" name="q" class="search-query" placeholder="Search"><input type="search" name="user" class="search-query" placeholder="User"><button type="submit" class="btn">Search</button></form></div>';return out;
 } } } };});

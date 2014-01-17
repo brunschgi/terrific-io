@@ -29,6 +29,7 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
+app.use(express.compress());
 app.use(express.cookieParser('terrificio'));
 app.use(express.session());
 app.use(express.static(path.join(__dirname, 'public')));

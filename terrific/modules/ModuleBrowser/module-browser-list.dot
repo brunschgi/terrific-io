@@ -2,7 +2,7 @@
 <li class="span4">
 	<div class="thumbnail">
 		<div class="iframe-wrap">
-			<a class="cover" href="#edit/{{= module._id }}"></a>
+			<a class="cover" href="#/edit/{{= module._id }}"></a>
 			<iframe src="/api/modules/render/{{= module._id }}" allowtransparency="true" frameborder="0"
 					scrolling="no"/>
 			<div class="meta-overlay">
@@ -11,7 +11,7 @@
 		</div>
 		<div class="meta">
 			<div class="user">
-				<a href="#user/{{= module.user._id }}">{{= module.user._id }}</a>
+				<a href="#/user/{{= module.user._id }}">{{= module.user._id }}</a>
 			</div>
 			<ul class="stats">
 				<li class="views">{{= module.meta.views }} <i class="icon-views"></i></li>
