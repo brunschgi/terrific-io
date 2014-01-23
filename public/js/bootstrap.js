@@ -91,18 +91,19 @@ require([
 			t.view($content, 'default', sections);
 
 			// build query object
-			var params = q.split('/');
 			var query = {};
 
-			for(var i = 0, len = params.length; i < len; i++) {
-				var param = params[i].split('=');
+			if(q) {
+				var params = q.split('/');
 
-				if(param['value'] != '') {
-					query[param[0]] = param[1];
+				for(var i = 0, len = params.length; i < len; i++) {
+					var param = params[i].split('=');
+
+					if(param['value'] != '') {
+						query[param[0]] = param[1];
+					}
 				}
 			}
-
-			console.log(query);
 
 			bootstrap({ end: function () {
 				// start module search

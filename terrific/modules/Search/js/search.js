@@ -35,14 +35,25 @@
 				}
 
 				// set hash without redirecting
-				hasher.changed.active = false; //disable changed signal
-				hasher.setHash('search/' + url.join('/')); //set hash without dispatching changed signal
+				hasher.changed.active = false; // disable changed signal
+				hasher.setHash('search/' + url.join('/')); // set hash without dispatching changed signal
 				hasher.changed.active = true; //re-enable signal
 
 				self.fire('search', query);
 			});
 
             callback();
-        }
+        },
+
+		onSearch: function (data) {
+			data = data || {};
+
+			var self = this,
+				$ctx = self.$ctx;
+
+			// prefill the search fields
+			$ctx.find('[name=q]').val(data['q']);
+			$ctx.find('[name=user]').val(data['user']);
+		}
     });
 })();

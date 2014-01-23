@@ -11,6 +11,7 @@
     "express-dot": "latest",
     "mongodb": "latest",
     "mongoose": "3.6.11",
+	"mongoose-text-search" : "latest",
     "pow-mongoose-fixtures": "latest",
     "passport": "latest",
     "passport-twitter": "latest",

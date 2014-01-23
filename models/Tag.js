@@ -7,5 +7,4 @@ var schema = new mongoose.Schema({
 schema.index({ name: 1, active: -1 });
 
 module.exports = mongoose.model('Tag', schema);
-
 module.exports.schema = schema;

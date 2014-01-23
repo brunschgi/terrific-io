@@ -17,12 +17,8 @@ module.exports = function (app) {
 
 			// search query
 			if (req.query.q) {
-				query.where('description').regex(/ + req.query.q + /);
-			}
-
-			// search by name
-			if (req.query.name) {
-				query.where('name').regex(/ + req.query.name + /);
+				var term = new RegExp(req.query.q, 'i');
+				query.or([{ description: { $regex: term }}, { name: { $regex: term }}]);
 			}
 
 			// show only modules for a given user

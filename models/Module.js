@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+	textSearch = require('mongoose-text-search');
 
 var schema = new mongoose.Schema({
 	name: { type: String, default: "" },
@@ -36,6 +37,11 @@ var schema = new mongoose.Schema({
 	modified: { type: Date, default: Date.now}
 }, { strict: true });
 
+// give our schema text search capabilities
+schema.plugin(textSearch);
+
+// add some indices
+schema.index({ name: 'text', description: 'text' });
 schema.index({ name: 1, active: -1 });
 
 schema.pre('save', function (next) {
@@ -44,5 +50,4 @@ schema.pre('save', function (next) {
 });
 
 module.exports = mongoose.model('Module', schema);
-
 module.exports.schema = schema;
